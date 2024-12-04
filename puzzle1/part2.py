@@ -1,3 +1,7 @@
+"""
+This program solves part 2 of Day 1 puzzle.
+"""
+
 from collections import defaultdict
 
 l = []

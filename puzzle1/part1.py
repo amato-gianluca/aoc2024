@@ -1,3 +1,7 @@
+"""
+This program solves part 1 of Day 1 puzzle.
+"""
+
 l1 = []
 l2 = []
 with open("puzzle1/input") as file:
