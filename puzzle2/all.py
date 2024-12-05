@@ -2,18 +2,22 @@
 This program solves both parts of Day 2 puzzle.
 """
 
-def is_safe_with_dampener(l):
+
+def is_safe_with_dampener(l: list[int]) -> bool:
     """
     Determines whether report l is safe, using the Problem Dampener.
     """
-    if is_safe(l): return True
+    if is_safe(l):
+        return True
     for i in range(len(l)):
         l1 = list(l)
         del l1[i]
-        if is_safe(l1): return True
+        if is_safe(l1):
+            return True
     return False
 
-def is_safe(l):
+
+def is_safe(l: list[int]) -> bool:
     """
     Determines whether report l is safe, without the use of the Problem Dampener.
     """
@@ -24,11 +28,12 @@ def is_safe(l):
             return False
     return True
 
+
 with open("puzzle2/input") as file:
     count = 0
     count_dampener = 0
     for line in file:
-        l =  [int(x) for x in line.split()]
+        l = [int(x) for x in line.split()]
         count += is_safe(l)
         count_dampener += is_safe_with_dampener(l)
 

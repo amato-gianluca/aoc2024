@@ -8,12 +8,12 @@ class Computer:
     """
 
     def __init__(self):
-        self._total = 0
-        self._guarded_total = 0
-        self._guarded = True
+        self._total: int = 0
+        self._guarded_total: int = 0
+        self._guarded: bool = True
 
     @property
-    def total(self):
+    def total(self) -> int:
         """
         Return the total of all mul instructions, independently from the fact
         that the computer was in a guarded state or not.
@@ -21,7 +21,7 @@ class Computer:
         return self._total
 
     @property
-    def guarded_total(self):
+    def guarded_total(self) -> int:
         """
         Return the total of all mul instructions executed when the computer
         was in a guarded state.
@@ -40,7 +40,7 @@ class Computer:
         """
         self._guarded = False
 
-    def mul(self, a, b):
+    def mul(self, a: int, b: int):
         """
         Multiply `a` and `b`, and update totals.
         """
@@ -49,7 +49,7 @@ class Computer:
         if self._guarded:
             self._guarded_total += mul
 
-    def parse(self, s):
+    def parse(self, s: str):
         """
         Parse the corrupted program `s` in search of instructions.
         """
@@ -68,5 +68,5 @@ with open('puzzle3/input') as file:
     for line in file:
         computer.parse(line)
 
-print("part 1:", computer.guarded_total)
-print("part 2:", computer.total)
+print("part 1:", computer.total)
+print("part 2:", computer.guarded_total)
