@@ -23,7 +23,7 @@ class multidict[K, V]:
         """
         self._dict[key].add(value)
 
-    def check(self, key: K, value: V):
+    def check(self, key: K, value: V) -> bool:
         """
         Check if V is associated to K
         """
@@ -34,7 +34,7 @@ def read_constraints(file: TextIO) -> multidict[int, int]:
     """
     Read the page ordering from the specified file.
     """
-    constraints = multidict()
+    constraints: multidict[int, int] = multidict()
     while (line := file.readline().rstrip()) != "":
         constraints.add(*map(int, line.split("|")))
     return constraints

@@ -2,8 +2,8 @@
 This program solves part 1 of Day 1 puzzle.
 """
 
-l1 = []
-l2 = []
+l1: list[int] = []
+l2: list[int] = []
 with open("puzzle1/input") as file:
     for line in file:
         v1, v2 = (int(v.strip()) for v in line.strip().split())

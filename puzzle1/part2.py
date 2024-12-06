@@ -4,8 +4,8 @@ This program solves part 2 of Day 1 puzzle.
 
 from collections import defaultdict
 
-l = []
-d = defaultdict(int)
+l: list[int] = []
+d: dict[int, int] = defaultdict(int)
 with open("puzzle1/input") as file:
     for line in file:
         v1, v2 = (int(v.strip()) for v in line.strip().split())
