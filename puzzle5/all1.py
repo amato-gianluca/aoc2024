@@ -51,8 +51,8 @@ def check_constraints(file: TextIO, constraints: multidict[int, int]) -> tuple[i
         if all(constraints.check(*s) for s in pairwise(sequence)):
             count1 += sequence[len(sequence)//2]
         else:
-            def comparison_function(
-                a, b): return 0 if a == b else -1 if constraints.check(a, b) else -1
+            def comparison_function(a: int, b: int):
+                return 0 if a == b else -1 if constraints.check(a, b) else 1
             sequence.sort(key=cmp_to_key(comparison_function))
             count2 += sequence[len(sequence)//2]
     return count1, count2
