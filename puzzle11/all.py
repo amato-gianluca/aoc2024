@@ -4,10 +4,8 @@ This program solves both parts of the Day 11 puzzle.
 
 import functools
 
-def read_line(filename: str) -> list[int]:
-    with open(filename) as f:
-        l = list(map(int, f.readline().split()))
-    return l
+from aoc import *
+
 
 @functools.cache
 def blink(x: int, n: int) -> int:
@@ -24,6 +22,7 @@ def blink(x: int, n: int) -> int:
     else:
         return blink(x * 2024, n-1)
 
+
 def blink_line(l: list[int], n: int) -> int:
     """
     Blink the line l for n times, and return the final the number of stones.
@@ -33,7 +32,20 @@ def blink_line(l: list[int], n: int) -> int:
         total += blink(x,  n)
     return total
 
-l = read_line("puzzle11/input")
-print("part 1:", blink_line(l, 25))
-print("part 2:", blink_line(l, 75))
-print(blink.cache_info())
+
+def parse_line(line: str) -> list[int]:
+    """
+    Parse the input line.
+    """
+    return list(map(int, line.split()))
+
+
+def main():
+    content = readfile("input")
+    l = parse_line(content[0])
+    print("part 1:", blink_line(l, 25))
+    print("part 2:", blink_line(l, 75))
+    print(blink.cache_info())
+
+
+main()

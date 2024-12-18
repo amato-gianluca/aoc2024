@@ -4,6 +4,8 @@ This program solves both parts of the Day 9 puzzle.
 
 from typing import NamedTuple
 
+from aoc import *
+
 
 class Block(NamedTuple):
     """
@@ -38,12 +40,10 @@ a disk sector.
 """
 
 
-def read_compressed_map(filename: str) -> compressed_map:
+def read_compressed_map(line: str) -> compressed_map:
     """
     Read the specified file and return a file map in the compressed format"
     """
-    with open(filename) as f:
-        line = f.readline().rstrip()
     blocks: compressed_map = []
     id = 0
     free_space = False
@@ -114,11 +114,16 @@ def compute_checksum(um: uncompressed_map) -> int:
     return sum(i * v for i, v in enumerate(um) if v != -1)
 
 
-cm = read_compressed_map("puzzle9/input")
+def main():
+    content = readfile("input")
+    cm = read_compressed_map(content[0])
 
-um = uncompress_map(cm)
-defragment_map(um)
-print("part 1:", compute_checksum(um))
+    um = uncompress_map(cm)
+    defragment_map(um)
+    print("part 1:", compute_checksum(um))
 
-defragment_map_block(cm)
-print("part 2:", compute_checksum(uncompress_map(cm)))
+    defragment_map_block(cm)
+    print("part 2:", compute_checksum(uncompress_map(cm)))
+
+
+main()

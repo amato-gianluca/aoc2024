@@ -5,8 +5,10 @@ This uses a lot of abstractions and is quite slow.
 """
 
 import time
-from typing import NamedTuple
 from enum import Enum, auto
+from typing import NamedTuple
+
+from aoc import *
 
 
 class vector2d(NamedTuple):
@@ -138,16 +140,9 @@ def find_loops(g: guard):
     return num_loops
 
 
-def read_map(filename: str) -> list[str]:
-    """
-    Read the map from the given file.
-    """
-    with open(filename) as f:
-        return [line.rstrip() for line in f]
-
-
 def main():
-    g = guard(read_map("puzzle6/input"))
+    content = readfile("input")
+    g = guard(content)
     g.run()
     print("part 1:", g.count_visited())
     print("part 2:", find_loops(g))

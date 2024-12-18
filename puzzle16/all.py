@@ -2,10 +2,10 @@
 This program solves both parts of the Day 16 puzzle.
 """
 
-from typing import NamedTuple
 from enum import Enum
-from dataclasses import dataclass, field
-from heapq import heappush, heappop
+from typing import NamedTuple
+
+from aoc import *
 
 INFINITY = 10000000
 """This should be larger than the minimum path between start and end cell."""
@@ -54,51 +54,6 @@ class Node(NamedTuple):
     i: int
     j: int
     dir: Direction
-
-
-class priority_queue[V]:
-    """
-    A priority queue for elements of type V. Its implementation in terms of heaps is
-    taken from the online Python reference manual.
-    """
-
-    @dataclass(order=True)
-    class _Entry:
-        """
-        An entry containing a value and a priority. The entry is ordered according
-        to priority.
-        """
-        value: V | None = field(compare=False)
-        priority: int
-
-    def __init__(self):
-        """
-        Initialize an empty priority queue.
-        """
-        self.entry_finder: dict[V, priority_queue._Entry] = {}
-        self.heap: list[priority_queue._Entry] = []
-
-    def add(self, value: V, priority: int):
-        """
-        Add an element to the priority queue or update its priority.
-        """
-        if value in self.entry_finder:
-            entry = self.entry_finder[value]
-            entry.value = None
-        entry = priority_queue._Entry(value, priority)
-        self.entry_finder[value] = entry
-        heappush(self.heap, entry)
-
-    def pop(self) -> V:
-        """
-        Extract the element with lowest priority.
-        """
-        while self.heap:
-            entry = heappop(self.heap)
-            if entry.value is not None:
-                del self.entry_finder[entry.value]
-                return entry.value
-        raise ValueError("Empty priority queue")
 
 
 class maze:
@@ -153,6 +108,8 @@ class maze:
         prev[self.i_start][self.i_end] = {(self.i_start, self.i_end)}
         while True:
             node = pq.pop()
+            if node == None:
+                raise ValueError("Cannot find path")
             i, j, dir = node
             dist = distance[node]
             if i == self.i_end and j == self.j_end:
@@ -177,17 +134,12 @@ class maze:
         return "\n".join("".join(line) for line in self.map)
 
 
-def read_file(filename: str) -> list[str]:
-    """
-    Return the content of file `filename` as a list of strings.
-    """
-    with open(filename) as f:
-        return f.read().splitlines()
+def main():
+    m_map = readfile("input")
+    m = maze(m_map)
+    cost, prevs = m.shortest_path()
+    print("part 1:", cost)
+    print("part 2:", prevs)
 
 
-m_map = read_file("puzzle16/input")
-m = maze(m_map)
-
-cost, prevs = m.shortest_path()
-print("part 1:", cost)
-print("part 2:", prevs)
+main()

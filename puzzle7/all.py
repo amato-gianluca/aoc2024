@@ -2,6 +2,8 @@
 This program solves both parts of the Day 7 puzzle.
 """
 
+from aoc import *
+
 
 def feasible(operands: list[int], pos: int, result: int, allow_concatenation: bool = False) -> bool:
     """
@@ -33,15 +35,18 @@ def parse_line(line: str) -> tuple[list[int], int]:
     return list(map(int, l2.split())), int(l1)
 
 
-part1 = part2 = 0
-with open("puzzle7/input") as file:
-    for line in file:
+def main():
+    part1 = part2 = 0
+    content = readfile("input")
+    for line in content:
         operands, result = parse_line(line)
         if feasible(operands, len(operands) - 1, result):
             part1 += result
             part2 += result
         elif feasible(operands, len(operands) - 1, result, allow_concatenation=True):
             part2 += result
+    print("part 1:", part1)
+    print("part 2:", part2)
 
-print("part 1:", part1)
-print("part 2:", part2)
+
+main()

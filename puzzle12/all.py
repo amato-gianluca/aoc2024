@@ -4,6 +4,8 @@ This program solves both parts of the Day 12 puzzle.
 
 from typing import NamedTuple
 
+from aoc import *
+
 
 class region(NamedTuple):
     """
@@ -76,7 +78,8 @@ class garden:
             # Recursively descends on non-visited neighbours of the same region
             for _, new_i, new_j in neighbours:
                 if 0 <= new_i < self.ncol and 0 <= new_j < self.nrow and self.map[new_i][new_j] == self.map[i][j] and visited[new_i][new_j] is None:
-                    new_area, new_perimeter, new_sides = analyze_cell(new_i, new_j)
+                    new_area, new_perimeter, new_sides = analyze_cell(
+                        new_i, new_j)
                     area += new_area
                     perimeter += new_perimeter
                     sides += new_sides
@@ -90,7 +93,8 @@ class garden:
         for i in range(self.nrow):
             for j in range(self.ncol):
                 if not visited[i][j]:
-                    self.regions.append(region(self.map[i][j], *analyze_cell(i, j)))
+                    self.regions.append(
+                        region(self.map[i][j], *analyze_cell(i, j)))
 
     def compute_costs(self):
         """
@@ -103,16 +107,11 @@ class garden:
         return cost1, cost2
 
 
-def read_map(file_name: str) -> list[str]:
-    """
-    Read map from file.
-    """
-    with open(file_name) as f:
-        m = f.read().splitlines()
-    return m
+def main():
+    m = garden(readfile("input"))
+    cost1, cost2 = m.compute_costs()
+    print("part 1:", cost1)
+    print("part 2:", cost2)
 
 
-m = garden(read_map("puzzle12/input"))
-cost1, cost2 = m.compute_costs()
-print("part 1:", cost1)
-print("part 2:", cost2)
+main()

@@ -2,12 +2,18 @@
 This program solves both parts of the Day 3 puzzle.
 """
 
+from aoc import *
+
+
 class Computer:
     """
     A computer that understands instructions mul, do and don't.
     """
 
     def __init__(self):
+        """
+        Initialize the computer.
+        """
         self._total: int = 0
         self._guarded_total: int = 0
         self._guarded: bool = True
@@ -51,7 +57,7 @@ class Computer:
 
     def parse(self, s: str):
         """
-        Parse the corrupted program `s` in search of instructions.
+        Parse the corrupted program `s` and computes the embedded instructions.
         """
         import re
         it = re.finditer(r"mul\(([0-9]+),([0-9]+)\)|do\(\)|don't\(\)", s)
@@ -63,10 +69,14 @@ class Computer:
             else:
                 self.mul(int(m[1]), int(m[2]))
 
-computer = Computer()
-with open('puzzle3/input') as file:
-    for line in file:
-        computer.parse(line)
 
-print("part 1:", computer.total)
-print("part 2:", computer.guarded_total)
+def main():
+    computer = Computer()
+    content = readfile("input")
+    for line in content:
+        computer.parse(line)
+    print("part 1:", computer.total)
+    print("part 2:", computer.guarded_total)
+
+
+main()

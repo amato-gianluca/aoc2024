@@ -5,36 +5,17 @@ It implements a minimal multi-dict class and builds a dynamically
 defined class which extends int with a new ordering.
 """
 
-from collections import defaultdict
 from itertools import pairwise
-from typing import TextIO, Callable
+from typing import Callable, TextIO
 
-
-class multidict[K, V]:
-    def __init__(self):
-        """
-        Initialize the multi dictionary.
-        """
-        self._dict: dict[K, set[V]] = defaultdict(set)
-
-    def add(self, key: K, value: V):
-        """
-        Add value V to key K.
-        """
-        self._dict[key].add(value)
-
-    def check(self, key: K, value: V):
-        """
-        Check if V is associated to K
-        """
-        return value in self._dict[key]
+from aoc import *
 
 
 def int_with_ordering(name: str, constraints: multidict[int, int]):
     """
     Return a class extending int and whose ordering is given by the `constraints` parameter.
     """
-    methods: dict[str, Callable[[int, int], bool]] =  {
+    methods: dict[str, Callable[[int, int], bool]] = {
         "__lt__": lambda a, b: constraints.check(a, b),
         # the following is not needed for this application but included for completeness
         "__lte__": lambda a, b: a == b or constraints.check(a, b),
@@ -71,9 +52,12 @@ def check_constraints(file: TextIO, constraints: multidict[int, int]) -> tuple[i
     return count1, count2
 
 
-with open("puzzle5/input") as file:
-    constraints = read_constraints(file)
-    count1, count2 = check_constraints(file, constraints)
+def main():
+    with openfile("input") as file:
+        constraints = read_constraints(file)
+        count1, count2 = check_constraints(file, constraints)
+    print("part 1:", count1)
+    print("part 2:", count2)
 
-print("part 1:", count1)
-print("part 2:", count2)
+
+main()

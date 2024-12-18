@@ -6,6 +6,8 @@ from collections import defaultdict
 from itertools import combinations
 from typing import Iterable
 
+from aoc import *
+
 type position = tuple[int, int]
 
 
@@ -19,21 +21,19 @@ class antennas_disposition:
     - num_cols: number of columns in the map
     """
 
-    def __init__(self, filename: str):
+    def __init__(self, content: file_content):
         """
         Reads the antennas disposition from the given file.
         """
         self.disposition: dict[str, set[position]] = defaultdict(set)
         self.num_rows = 0
-        with open(filename) as f:
-            for i, line in enumerate(f):
-                line = line.rstrip()
-                self.num_rows += 1
-                if i == 0:
-                    self.num_cols = len(line)
-                for j, ch in enumerate(line):
-                    if ch.isalnum():
-                        self.disposition[ch].add((i, j))
+        for i, line in enumerate(content):
+            self.num_rows += 1
+            if i == 0:
+                self.num_cols = len(line)
+            for j, ch in enumerate(line):
+                if ch.isalnum():
+                    self.disposition[ch].add((i, j))
 
     def is_inside(self, i: int, j: int) -> bool:
         """
@@ -109,8 +109,13 @@ class antinodes:
         return out
 
 
-ad = antennas_disposition('puzzle8/input')
-an1 = antinodes(ad)
-an2 = antinodes(ad, True)
-print("part 1:", an1.size())
-print("part 2:", an2.size())
+def main():
+    content = readfile("input")
+    ad = antennas_disposition(content)
+    an1 = antinodes(ad)
+    an2 = antinodes(ad, True)
+    print("part 1:", an1.size())
+    print("part 2:", an2.size())
+
+
+main()

@@ -4,6 +4,8 @@ This program solves both parts of the Day 15 puzzle.
 
 from typing import TextIO
 
+from aoc import *
+
 
 class warehouse:
 
@@ -144,7 +146,7 @@ def read_moves(f: TextIO) -> str:
     return "".join(f.read().splitlines())
 
 
-with open("puzzle15/input") as f:
+with openfile("input") as f:
     w_map = read_map(f)
     moves = read_moves(f)
 

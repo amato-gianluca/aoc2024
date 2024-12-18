@@ -2,6 +2,9 @@
 This program solves both parts of the Day 4 puzzle.
 """
 
+from aoc import *
+
+
 def check_word(m: list[str], i: int, j: int, stepi: int, stepj: int, word: str) -> bool:
     """
     Return true if in the character matrix `m`, starting from position (`i`, `j`), and
@@ -15,6 +18,7 @@ def check_word(m: list[str], i: int, j: int, stepi: int, stepj: int, word: str) 
             return False
     return True
 
+
 def search_word(m: list[str], word: str):
     """
     Count the number of times `word` occurs in `m`. It requires `word` NOT TO
@@ -23,12 +27,15 @@ def search_word(m: list[str], word: str):
     count = 0
     for i in range(len(m)):
         for j in range(len(m[i])):
-            if m[i][j] != word[0]: continue   # optimization, not really needed
+            if m[i][j] != word[0]:
+                continue   # optimization, not really needed
             for stepi in -1, 0, 1:
                 for stepj in -1, 0, 1:
-                    if stepi == 0 == stepj: continue
+                    if stepi == 0 == stepj:
+                        continue
                     count += check_word(m, i, j,  stepi, stepj, word)
     return count
+
 
 def search_x_word(m: list[str], word: str):
     """
@@ -44,8 +51,11 @@ def search_x_word(m: list[str], word: str):
                     count += 1
     return count
 
-with open('puzzle4/input') as f:
-    matrix = f.read().splitlines()
 
-print("part 1:", search_word(matrix, "XMAS"))
-print("part 2:", search_x_word(matrix, "MAS"))
+def main():
+    matrix = readfile("input")
+    print("part 1:", search_word(matrix, "XMAS"))
+    print("part 2:", search_x_word(matrix, "MAS"))
+
+
+main()

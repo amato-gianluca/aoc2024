@@ -2,6 +2,8 @@
 This program solves part 1 of Day 3 puzzle.
 """
 
+from aoc import *
+
 
 def parse(s: str):
     """
@@ -15,9 +17,12 @@ def parse(s: str):
     return total
 
 
-total = 0
-with open('puzzle3/input') as file:
-    for line in file:
+def main():
+    total = 0
+    content = readfile("input")
+    for line in content:
         total += parse(line)
+    print(total)
 
-print(total)
+
+main()

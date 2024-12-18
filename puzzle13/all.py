@@ -2,8 +2,10 @@
 This program solves both parts of the Day 13 puzzle.
 """
 
-from typing import NamedTuple, Generator
 import re
+from typing import Generator, NamedTuple
+
+from aoc import *
 
 COSTA = 3
 COSTB = 1
@@ -27,7 +29,7 @@ def read_machines(filename: str) -> Generator[machine, None, None]:
     """
     Generator which reads machines from the given file.
     """
-    with open(filename) as f:
+    with openfile(filename) as f:
         while True:
             line = f.readline()
             if line == "":
@@ -82,13 +84,17 @@ def solve_machine(m: machine) -> int | None:
     return None
 
 
-cost1 = cost2 = 0
-for m1 in read_machines("puzzle13/input"):
-    if cost := solve_machine(m1):
-        cost1 += cost
-    m2 = m1._replace(posx=m1.posx + INCREASE, posy=m1.posy + INCREASE)
-    if cost := solve_machine(m2):
-        cost2 += cost
+def main():
+    cost1 = cost2 = 0
+    for m1 in read_machines("input"):
+        if cost := solve_machine(m1):
+            cost1 += cost
+        m2 = m1._replace(posx=m1.posx + INCREASE, posy=m1.posy + INCREASE)
+        if cost := solve_machine(m2):
+            cost2 += cost
 
-print("part 1:", cost1)
-print("part 2:", cost2)
+    print("part 1:", cost1)
+    print("part 2:", cost2)
+
+
+main()

@@ -2,6 +2,9 @@
 This program solves both parts of the Day 17 puzzle.
 """
 
+from aoc import *
+
+
 class cpu:
     """
     CPU simulator.
@@ -77,7 +80,7 @@ def read_data(filename: str) -> tuple[list[int], list[int]]:
     Read memory and initial register values from a file.
     """
     regs: list[int] = []
-    with open(filename) as f:
+    with openfile(filename) as f:
         for _ in range(3):
             regs.append(int(f.readline().split(":")[1]))
         f.readline()
@@ -104,11 +107,13 @@ def find_num(mem: list[int], v: int, i: int) -> int | None:
                     return res
         return None
 
+
 def main():
-    regs, mem = read_data("puzzle17/input")
+    regs, mem = read_data("input")
     pc = cpu(mem, regs)
     pc.execute()
     print("part 1:", ",".join(map(str, pc.out)))
     print("part 2:", find_num(mem, 0, len(mem)-1))
+
 
 main()

@@ -3,10 +3,8 @@ This program solves part 1 of the Day 11 puzzle by simulating the evolution
 of the sequence of stones. This does not scale up for part 2.
 """
 
-def read_line(filename: str) -> list[int]:
-    with open(filename) as f:
-        l = list(map(int, f.readline().split()))
-    return l
+from aoc import *
+
 
 def blink_line(line: list[int]) -> list[int]:
     """
@@ -24,14 +22,25 @@ def blink_line(line: list[int]) -> list[int]:
             new_line.append(x * 2024)
     return new_line
 
-l = read_line("puzzle11/input")
 
-line = l
-print(f"step 0 length {len(line)}")
-for i in range(25):
-    line = blink_line(line)
-    print(f"step {i+1} length {len(line):_}")
+def parse_line(line: str) -> list[int]:
+    """
+    Parse the input line.
+    """
+    return list(map(int, line.split()))
 
-# An attemp to run 75 iterations fails at iteration 45 on my PC, since the process is
-# killed by the OOM killer.
-# At iteration 44, the line was 606_737_523 positions long
+
+def main():
+    content = readfile("input")
+    line = parse_line(content[0])
+
+    print(f"step 0 length {len(line)}")
+    for i in range(25):
+        line = blink_line(line)
+        print(f"step {i+1} length {len(line):_}")
+    # An attemp to run 75 iterations fails at iteration 45 on my PC, since the process is
+    # killed by the OOM killer.
+    # At iteration 44, the line was 606_737_523 positions long
+
+
+main()

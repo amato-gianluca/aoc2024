@@ -2,6 +2,8 @@
 This program solves both parts of the Day 10 puzzle.
 """
 
+from aoc import *
+
 type topomap = list[list[int]]
 """A topological map."""
 
@@ -23,7 +25,7 @@ def trails_from(m: topomap, pos: position) -> tuple[set[position], int]:
         count = 0
         for new_pos in [(i-1, j), (i, j-1), (i+1, j), (i, j+1)]:
             new_i, new_j = new_pos
-            if 0 <= new_i < len(m) and 0 <= new_j < len(m[0]) and  m[new_i][new_j] == val + 1:
+            if 0 <= new_i < len(m) and 0 <= new_j < len(m[0]) and m[new_i][new_j] == val + 1:
                 new_tails, new_count = trails_from(m, new_pos)
                 tails.update(new_tails)
                 count += new_count
@@ -45,18 +47,18 @@ def trail_score(m: topomap) -> tuple[int, int]:
     return score, rating
 
 
-def read_file(filename: str) -> topomap:
+def parse_input(content: file_content) -> topomap:
     """
     Read a topographic map from the given file.
     """
     m: topomap = []
-    with open(filename) as f:
-        for line in f:
-            m.append([int(ch) for ch in line.rstrip()])
+    for line in content:
+        m.append([int(ch) for ch in line.rstrip()])
     return m
 
 
-m = read_file('puzzle10/input')
+content = readfile("input")
+m = parse_input(content)
 score, rating = trail_score(m)
 print("part 1:", score)
 print("part 2:", rating)

@@ -7,6 +7,8 @@ execution, but to a no avail.
 
 import time
 
+from aoc import *
+
 type vector2d = tuple[int, int]
 type visited_list = list[list[int]]
 
@@ -77,7 +79,7 @@ class guard:
             else:
                 self.i = i
                 self.j = j
-            mask = 1 << self.diri + self.dirj *3  + 4
+            mask = 1 << self.diri + self.dirj * 3 + 4
             if self.visited[i][j] & mask:
                 return 'loop'
             else:
@@ -124,16 +126,9 @@ def find_loops(g: guard):
     return num_loops
 
 
-def read_map(filename: str) -> list[str]:
-    """
-    Read the map from the given file.
-    """
-    with open(filename) as f:
-        return [line.rstrip() for line in f]
-
-
 def main():
-    g = guard(read_map("puzzle6/input"))
+    content = readfile("input")
+    g = guard(content)
     g.run()
     print("part 1:", g.count_visited())
     print("part 2:", find_loops(g))
