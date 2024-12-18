@@ -34,10 +34,13 @@ def main():
     content = readfile("input")
     line = parse_line(content[0])
 
-    print(f"step 0 length {len(line)}")
+    #print(f"step 0 length {len(line)}")
+    #print(line)
     for i in range(25):
         line = blink_line(line)
-        print(f"step {i+1} length {len(line):_}")
+        #print(f"step {i+1} length {len(line):_}")
+        #if len(line) < 100: print(line)
+    print("part 1:", len(line))
     # An attemp to run 75 iterations fails at iteration 45 on my PC, since the process is
     # killed by the OOM killer.
     # At iteration 44, the line was 606_737_523 positions long
