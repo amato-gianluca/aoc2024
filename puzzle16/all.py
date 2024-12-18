@@ -1,5 +1,5 @@
 """
-This program solves both parts of the Day 15 puzzle.
+This program solves both parts of the Day 16 puzzle.
 """
 
 from typing import NamedTuple
