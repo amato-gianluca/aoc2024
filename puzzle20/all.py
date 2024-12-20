@@ -11,9 +11,6 @@ class Day20Maze(Maze):
     Extend the Maze class with the support for cheats.
     """
 
-    def __init__(self, map: list[str]):
-        super().__init__(map)
-
     def cheats(self, pos: tuple[int, int], steps: int) -> list[Maze.position]:
         """
         Return the list of possible cheats starting from `pos` and of length `steps`
