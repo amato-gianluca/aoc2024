@@ -1,3 +1,7 @@
+"""
+This program solves both parts of the Day 20 puzzle.
+"""
+
 import functools
 from operator import methodcaller
 from typing import TextIO
