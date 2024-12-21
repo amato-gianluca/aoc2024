@@ -7,7 +7,7 @@ from aoc import *
 
 class Day18Maze(Maze):
     """
-    Implementation of the maze with falling blocks.
+    Maze with falling blocks.
     """
 
     def __init__(self, size: int, drops: list[tuple[int, int]]):

@@ -44,6 +44,9 @@ class Direction(Enum):
 
 
 class Day16Maze(Maze):
+    """
+    Reindeer maze.
+    """
 
     type pos_with_dir = tuple[int, int, Direction]
 

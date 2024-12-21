@@ -8,7 +8,7 @@ from aoc import *
 
 class Day20Maze(Maze):
     """
-    Extend the Maze class with the support for cheats.
+    Maze with cheats.
     """
 
     def cheats(self, pos: tuple[int, int], steps: int) -> list[Maze.position]:
