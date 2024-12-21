@@ -31,18 +31,18 @@ class Day20Maze(Maze):
         gain 100 picoseconds or more.
         """
         pos_end = self.i_end, self.j_end
-        preds1, dist1 = self.dijkstra()
-        _, dist2 = self.dijkstra(pos_end)
-        path = path_compute(preds1, pos_end)
+        dijkstra1 = self.dijkstra()
+        dijkstra2 = self.dijkstra(pos_end)
+        path = dijkstra1.path_compute(pos_end)
         if path is None:
             return None
-        length = dist1[pos_end]
+        length = dijkstra1.dists[pos_end]
         gains = [0] * length
         for pos in path:
             cheats = self.cheats(pos, steps)
             for cheat_pos in cheats:
-                first_piece = dist1[pos]
-                second_piece = dist2.get(cheat_pos, None)
+                first_piece = dijkstra1.dists[pos]
+                second_piece = dijkstra2.dists.get(cheat_pos, None)
                 if second_piece is not None:
                     gain = length - first_piece - second_piece - \
                         (abs(cheat_pos[0]-pos[0])+abs(cheat_pos[1]-pos[1]))

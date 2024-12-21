@@ -92,56 +92,83 @@ class priority_queue[V]:
         return None
 
 
-def dijkstra[V](start: V, moves: Callable[[V], Iterable[tuple[V, int]]]) -> tuple[dict[V, V], dict[V, int]]:
+class Dijkstra[V]:
     """
-    The Dijkstra's shortest path algorithm.
-
-    Input parameters:
-      - `start` is the start node
-      - `moves` returns, for each node src, a list of pairs (dst, w) such that dst is reachable from src with weight w
-    Returns:
-      - a map from a node to its predecessor in the shortest path from start
-      - a map from a node n to the shortest distance from start to n
+    A class representing the set of shortests path in a graph from a given starting node, computed
+    using the Dijkstra algorithm.
     """
-    pq = priority_queue[V]()
-    distance: dict[V, int] = {}
-    prev: dict[V, V] = {}
 
-    distance[start] = 0
-    prev[start] = start
-    pq.add(start, 0)
-    while True:
-        node = pq.pop()
-        if node is None:
-            return prev, distance
-        dist = distance[node]
-        for node_new, cost in moves(node):
-            dist_update = dist + cost
-            if node_new in distance:
-                dist_new = distance[node_new]
-                if dist_update < dist_new:
-                    pq.add(node_new, dist_update)
+    def __init__(self, start: V, moves: Callable[[V], Iterable[tuple[V, int]]]):
+        """
+        Execute the Dijkstra algorithm.
+
+        Parameters:
+        - `start` is the start node
+        - `moves` returns, for each node src, a list of pairs (dst, w) such that dst is reachable from src with weight w
+        Returns:
+        - a map from a node to all the predecessors in the shortest paths from start.
+        - a map from a node n to the shortest distance from start to n.
+        """
+        self.start = start
+        self.moves = moves
+        self.prevs, self.dists = self.__dijkstra__(start, moves)
+
+    @staticmethod
+    def __dijkstra__(start: V, moves: Callable[[V], Iterable[tuple[V, int]]]) -> tuple[dict[V, list[V]], dict[V, int]]:
+        """
+        Actually perform the algorithm.
+        """
+        pq = priority_queue[V]()
+        distance: dict[V, int] = {}
+        prev: dict[V, list[V]] = defaultdict(list)
+
+        distance[start] = 0
+        prev[start] = [start]
+        pq.add(start, 0)
+        while True:
+            node = pq.pop()
+            if node is None:
+                return prev, distance
+            dist = distance[node]
+            for node_new, cost in moves(node):
+                dist_update = dist + cost
+                if node_new in distance:
+                    dist_new = distance[node_new]
+                    if dist_update < dist_new:
+                        pq.add(node_new, dist_update)
+                        distance[node_new] = dist_update
+                        prev[node_new] = [node]
+                    elif dist_update == dist_new:
+                        prev[node_new].append(node)
+
+                else:
                     distance[node_new] = dist_update
-                    prev[node_new] = node
-            else:
-                distance[node_new] = dist_update
-                pq.add(node_new, dist_update)
-                prev[node_new] = node
+                    pq.add(node_new, dist_update)
+                    prev[node_new] = [node]
 
+    def path_compute(self, end: V) -> list[V] | None:
+        """
+        Return one of the shortest paths leading to `end`, or None is such a path does not exist.
+        """
+        if end not in self.prevs:
+            return None
+        current = end
+        path = [current]
+        while (p := self.prevs[current][0]) != current:
+            path.append(p)
+            current = p
+        path.reverse()
+        return path
 
-def path_compute[V](prevs: dict[V, V], end: V) -> list[V] | None:
-    """
-    Compute a path reaching `end` using the map of predecessor nodes `dict`.
-    """
-    if end not in prevs:
-        return None
-    current = end
-    path = [current]
-    while (p := prevs[current]) != current:
-        path.append(p)
-        current = p
-    path.reverse()
-    return path
+    def nodes_in_path(self, end: V) -> set[V]:
+        """
+        Return the set of all nodes in the shortest paths leading to end.
+        """
+        nodes: set[V] = {end}
+        for prev in self.prevs[end]:
+            if prev != end:
+                nodes.update(self.nodes_in_path(prev))
+        return nodes
 
 
 class Maze:
@@ -183,7 +210,7 @@ class Maze:
             if self.map[i_new][j_new] != "#" and 0 <= i_new < self.nrow and 0 <= j_new < self.ncol
         ]
 
-    def dijkstra(self, start: position | None = None) -> tuple[dict[position, position], dict[position, int]]:
+    def dijkstra(self, start: position | None = None) -> Dijkstra[position]:
         """
         Apply Dijikstra shortes path algorith to the maze, with the given starting node (by default,
         it is the starting node of the maze).
@@ -192,13 +219,7 @@ class Maze:
             start = (self.i_start, self.j_start)
         moves: Callable[[Maze.position], list[tuple[Maze.position, int]]] = lambda pos: [
             (pos_new, 1) for pos_new in self.adjacent_positions(pos)]
-        return dijkstra(start, moves)
-
-    def shortest_path(self) -> list[position] | None:
-        """
-        Return the shortest path from the start to the end node, None if no such a path exists.
-        """
-        return path_compute(self.dijkstra()[0], (self.i_end, self.j_end))
+        return Dijkstra(start, moves)
 
     def __str__(self):
         return "\n".join("".join(line) for line in self.map)
