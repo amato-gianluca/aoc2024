@@ -182,14 +182,14 @@ class Maze:
         """
         Initialize the maze from the map given as a list of strings.
         """
-        self.map = map
+        self.map = [ [ch for ch in line] for line in map ]
         self.i_start, self.j_start = self._find_char(self.map, "S")
         self.i_end, self.j_end = self._find_char(self.map, "E")
         self.nrow = len(self.map)
         self.ncol = len(self.map[0])
 
     @staticmethod
-    def _find_char(map: list[str], ch: str) -> position:
+    def _find_char(map: list[list[str]], ch: str) -> position:
         """
         Return the position of a given character in a list of strings.
         """
@@ -207,7 +207,8 @@ class Maze:
         return [
             (i_new, j_new)
             for i_new, j_new in choices
-            if self.map[i_new][j_new] != "#" and 0 <= i_new < self.nrow and 0 <= j_new < self.ncol
+            if 0 <= i_new < self.nrow and 0 <= j_new < self.ncol
+            if self.map[i_new][j_new] != "#"
         ]
 
     def dijkstra(self, start: position | None = None) -> Dijkstra[position]:
@@ -220,6 +221,10 @@ class Maze:
         moves: Callable[[Maze.position], list[tuple[Maze.position, int]]] = lambda pos: [
             (pos_new, 1) for pos_new in self.adjacent_positions(pos)]
         return Dijkstra(start, moves)
+
+    def shortest_path(self) -> int | None:
+        dijkstra = self.dijkstra()
+        return dijkstra.dists[(self.i_end, self.j_end)] if (self.i_end, self.j_end) in dijkstra.dists else None
 
     def __str__(self):
         return "\n".join("".join(line) for line in self.map)
