@@ -27,10 +27,7 @@ def blink_line(l: list[int], n: int) -> int:
     """
     Blink the line l for n times, and return the final the number of stones.
     """
-    total = 0
-    for x in l:
-        total += blink(x,  n)
-    return total
+    return sum(blink(v, n) for v in l)
 
 
 def parse_line(line: str) -> list[int]:
