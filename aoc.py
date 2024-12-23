@@ -6,7 +6,7 @@ from collections import defaultdict
 from dataclasses import dataclass, field
 from heapq import heappop, heappush
 from pathlib import Path
-from typing import Callable, Iterable, TextIO
+from typing import Callable, Iterable, Iterator, TextIO
 
 import __main__
 
@@ -45,7 +45,15 @@ class multidict[K, V]:
         """
         Check if V is associated to K
         """
-        return value in self._dict[key]
+        return value in self._dict.get(key, set())
+
+    def __getitem__(self, key: K) -> set[V]:
+        return self._dict.get(key, set())
+
+    def items(self) -> Iterator[tuple[K, V]]:
+        for k, values in self._dict.items():
+            for v in values:
+                yield k, v
 
 
 class priority_queue[V]:
@@ -182,7 +190,7 @@ class Maze:
         """
         Initialize the maze from the map given as a list of strings.
         """
-        self.map = [ [ch for ch in line] for line in map ]
+        self.map = [[ch for ch in line] for line in map]
         self.i_start, self.j_start = self._find_char(self.map, "S")
         self.i_end, self.j_end = self._find_char(self.map, "E")
         self.nrow = len(self.map)
