@@ -89,9 +89,13 @@ def complexity(code: str, length: int) -> int:
     return length * num
 
 
-codes = readfile("input")
-part1 = sum(complexity(code, 2) for code in codes)
-print("part 1:", part1)
+def main():
+    codes = readfile("input")
+    part1 = sum(complexity(code, 2) for code in codes)
+    print("part 1:", part1)
 
-part2 = sum(complexity(code, 25) for code in codes)
-print("part 2:", part2)
+    part2 = sum(complexity(code, 25) for code in codes)
+    print("part 2:", part2)
+
+
+main()
