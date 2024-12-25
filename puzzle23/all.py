@@ -1,5 +1,5 @@
 """
-This program solves both parts of the Day 22 puzzle.
+This program solves both parts of the Day 23 puzzle.
 """
 
 from aoc import *
